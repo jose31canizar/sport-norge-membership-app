@@ -1,210 +1,108 @@
 import React from "react";
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
-  View
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity
 } from "react-native";
-import { WebBrowser } from "expo";
-
+import QRCode from "react-native-qrcode";
+import { styles } from "./style";
+import { withNavigation } from "react-navigation";
 import { FuturaText } from "../../components/StyledText";
+import { data } from "../../mock-data";
+import Carousel from "react-native-snap-carousel";
+import QRCodeModal from "../../components/QRCodeModal";
 
-export default class HomeScreen extends React.Component {
+const SectionButton = withNavigation(({ navigation, name }) => (
+  <TouchableOpacity
+    style={styles.section_button}
+    onPress={() => navigation.navigate("Offers")}
+  >
+    <FuturaText>{name}</FuturaText>
+  </TouchableOpacity>
+));
+
+const FeaturedOffer = props => (
+  <View style={styles.featured_offer}>
+    <Image source={{ uri: props.image }} style={styles.featured_offer_image} />
+    <FuturaText>{props.name}</FuturaText>
+  </View>
+);
+
+export default class LinksScreen extends React.Component {
+  state = {
+    text: "http://facebook.github.io/react-native/",
+    showQRCodeModal: false
+  };
   static navigationOptions = {
-    header: null
+    title: "Links"
+  };
+  componentWillMount() {
+    this.setState({ width: Dimensions.get("window").width });
+  }
+  toggleModal = show => {
+    this.setState({ showQRCodeModal: show });
   };
 
   render() {
+    const { width, showQRCodeModal } = this.state;
+    const { navigate } = this.props.navigation;
+    const name = "Jose Canizares";
+    const club = "Sport Norge";
+    const division = "Football";
     return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require("../../assets/images/robot-dev.png")
-                  : require("../../assets/images/robot-prod.png")
-              }
-              style={styles.welcomeImage}
+      <ScrollView style={styles.container}>
+        <View style={styles.qr_code_container}>
+          <FuturaText>{name}</FuturaText>
+          <FuturaText>{club}</FuturaText>
+          <FuturaText>{division}</FuturaText>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => this.setState({ text: text })}
+            value={this.state.text}
+          />
+          <TouchableOpacity onPress={() => this.toggleModal(true)}>
+            <QRCode
+              value={this.state.text}
+              size={200}
+              bgColor="#345962"
+              fgColor="white"
             />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <FuturaText style={styles.getStartedText}>
-              Get started by opening
-            </FuturaText>
-
-            <View
-              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-            >
-              <FuturaText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </FuturaText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}
-            >
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            <FuturaText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </FuturaText>
-          </View>
+          </TouchableOpacity>
+          <QRCodeModal
+            showModal={showQRCodeModal}
+            toggleModal={this.toggleModal}
+            value={this.state.text}
+          />
         </View>
-      </View>
+        <Carousel
+          loop
+          slideInterpolatedStyle={(index, animatedValue, carouselProps) => {
+            return {
+              opacity: animatedValue.interpolate({
+                inputRange: [-1, 0, 1],
+                outputRange: [0, 0.5, 1],
+                extrapolate: "clamp"
+              })
+            };
+          }}
+          containerCustomStyle={styles.featured_offers}
+          data={data}
+          renderItem={({ item }) => <FeaturedOffer {...item} />}
+          sliderWidth={width}
+          itemWidth={width * 0.7}
+          keyExtractor={(item, i) => i.toString()}
+        />
+        <View style={styles.section_buttons}>
+          <SectionButton name="Offers" />
+          <SectionButton name="Your Benefits" />
+          <SectionButton name="Stores" />
+        </View>
+      </ScrollView>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use
-          useful development tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync(
-      "https://docs.expo.io/versions/latest/guides/development-mode"
-    );
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      "https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes"
-    );
-  };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff"
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: "rgba(0,0,0,0.4)",
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: "center"
-  },
-  contentContainer: {
-    paddingTop: 30
-  },
-  welcomeContainer: {
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 20
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10
-  },
-  getStartedContainer: {
-    alignItems: "center",
-    marginHorizontal: 50
-  },
-  homeScreenFilename: {
-    marginVertical: 7
-  },
-  codeHighlightText: {
-    color: "rgba(96,100,109, 0.8)"
-  },
-  codeHighlightContainer: {
-    backgroundColor: "rgba(0,0,0,0.05)",
-    borderRadius: 3,
-    paddingHorizontal: 4
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  tabBarInfoContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    alignItems: "center",
-    backgroundColor: "#fbfbfb",
-    paddingVertical: 20
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    textAlign: "center"
-  },
-  navigationFilename: {
-    marginTop: 5
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: "center"
-  },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: "#2e78b7"
-  }
-});

@@ -7,6 +7,7 @@ import {
   StyleSheet
 } from "react-native";
 import {
+  createSwitchNavigator,
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation";
@@ -15,9 +16,12 @@ import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/Home";
 import LinksScreen from "../screens/Links";
 import SettingsScreen from "../screens/Settings";
+import OffersScreen from "../screens/Offers";
+import Login from "../screens/Login";
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen
+  Home: HomeScreen,
+  Offers: OffersScreen
 });
 
 HomeStack.navigationOptions = {
@@ -27,8 +31,8 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
+          ? `ios-home${focused ? "" : "-outline"}`
+          : "md-home"
       }
     />
   )
@@ -45,8 +49,8 @@ LinksStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === "ios"
-          ? `ios-link${focused ? "" : "-outline"}`
-          : "md-link"
+          ? `ios-pricetag${focused ? "" : "-outline"}`
+          : "md-pricetag"
       }
     />
   )
@@ -70,58 +74,63 @@ SettingsStack.navigationOptions = {
   )
 };
 
-export default createBottomTabNavigator(
-  {
-    HomeStack,
-    LinksStack,
-    SettingsStack
-  },
-  {
-    tabBarComponent: ({
-      navigation,
-      renderIcon,
-      activeTintColor,
-      inactiveTintColor,
-      jumpTo,
-      navigation: {
-        state: { routes }
-      }
-    }) => {
-      return (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            padding: 20
-          }}
-        >
-          {routes &&
-            routes.map((route, index) => {
-              const focused = index === navigation.state.index;
-              const tintColor = focused ? activeTintColor : inactiveTintColor;
-
-              return (
-                <TouchableWithoutFeedback
-                  key={route.key}
-                  style={styles.tab}
-                  onPress={() => jumpTo(route.key)}
-                >
-                  <View style={styles.tab}>
-                    {renderIcon({
-                      route,
-                      index,
-                      focused,
-                      tintColor
-                    })}
-                  </View>
-                </TouchableWithoutFeedback>
-              );
-            })}
-        </View>
-      );
-    }
+const TabBar = ({
+  navigation,
+  renderIcon,
+  activeTintColor,
+  inactiveTintColor,
+  jumpTo,
+  navigation: {
+    state: { routes }
   }
-);
+}) => {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 20
+      }}
+    >
+      {routes &&
+        routes.map((route, index) => {
+          const focused = index === navigation.state.index;
+          const tintColor = focused ? activeTintColor : inactiveTintColor;
+
+          return (
+            <TouchableWithoutFeedback
+              key={route.key}
+              style={styles.tab}
+              onPress={() => jumpTo(route.key)}
+            >
+              <View style={styles.tab}>
+                {renderIcon({
+                  route,
+                  index,
+                  focused,
+                  tintColor
+                })}
+              </View>
+            </TouchableWithoutFeedback>
+          );
+        })}
+    </View>
+  );
+};
+
+// export default createBottomTabNavigator(
+//   {
+//     HomeStack
+//   },
+//   {
+//     tabBarComponent: TabBar
+//   }
+// );
+
+export default createSwitchNavigator({
+  HomeStack,
+  Login
+});
 
 const styles = StyleSheet.create({
   tabbar: {

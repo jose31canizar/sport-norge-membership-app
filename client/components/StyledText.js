@@ -6,7 +6,7 @@ export class FuturaText extends React.Component {
     return (
       <Text
         {...this.props}
-        style={[this.props.style, { fontFamily: "Futura" }]}
+        style={[this.props.style, { fontFamily: "Futura", zIndex: 0 }]}
       />
     );
   }
