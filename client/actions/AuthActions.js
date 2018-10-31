@@ -1,5 +1,5 @@
-import axios from "axios";
 import { API } from "../api";
+import { doSignInWithEmailAndPassword } from "../firebase/auth";
 
 export const login = ({ emailOrPhone, password }) => dispatch => {
   dispatch({
@@ -11,8 +11,11 @@ export const login = ({ emailOrPhone, password }) => dispatch => {
   //   emailOrPhone: this.state.emailOrPhone,
   //   password: this.state.password
   // });
-  return Promise.resolve(2);
-  dispatch(loginSuccess({ emailOrPhone, password }));
+  // return Promise.resolve(2);
+  return doSignInWithEmailAndPassword(emailOrPhone, password)
+    .then(() => dispatch(loginSuccess({ emailOrPhone, password })))
+    .catch(err => console.log(err));
+
   // axios
   //   .post(`http://${API}/login`, { emailOrPhone, password })
   //   .then(function(response) {
@@ -24,7 +27,9 @@ export const login = ({ emailOrPhone, password }) => dispatch => {
   //   });
 };
 
-const loginSuccess = res => dispatch =>
+const loginSuccess = res => dispatch => {
+  console.log(res, "success");
   dispatch({ type: "LOGIN_SUCCESS", ...res });
+};
 
 export const logout = () => dispatch => ({ type: "persist/PURGE" });
