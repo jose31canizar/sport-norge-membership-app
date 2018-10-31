@@ -1,10 +1,21 @@
-import React from 'react';
-import { createSwitchNavigator } from 'react-navigation';
+import React from "react";
+import { createSwitchNavigator } from "react-navigation";
+import Login from "../screens/Login";
+import MainTabNavigator from "./MainTabNavigator";
+import { connect } from "react-redux";
 
-import MainTabNavigator from './MainTabNavigator';
-
-export default createSwitchNavigator({
-  // You could add another route here for authentication.
-  // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-  Main: MainTabNavigator,
+export default connect(
+  state => ({ autoLoggingIn: state.auth.autoLoggingIn }),
+  null
+)(props => {
+  let X = createSwitchNavigator(
+    {
+      Login,
+      Main: MainTabNavigator
+    },
+    {
+      initialRouteName: props.autoLoggingIn ? "Main" : "Login"
+    }
+  );
+  return <X />;
 });

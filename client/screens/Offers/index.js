@@ -3,7 +3,7 @@ import { FlatList, View, Text, Image, TouchableOpacity } from "react-native";
 import { data } from "../../mock-data";
 import { styles } from "./style";
 import { FuturaText } from "../../components/StyledText";
-import { Constants, Svg } from "expo";
+import { Svg } from "expo";
 import Offer from "../../components/OfferModal";
 
 const OfferPercentage = props => (

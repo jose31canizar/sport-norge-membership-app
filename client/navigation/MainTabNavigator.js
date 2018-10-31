@@ -17,12 +17,24 @@ import HomeScreen from "../screens/Home";
 import LinksScreen from "../screens/Links";
 import SettingsScreen from "../screens/Settings";
 import OffersScreen from "../screens/Offers";
-import Login from "../screens/Login";
 
-const HomeStack = createStackNavigator({
+import QRCodeViewer from "../screens/QRCodeViewer";
+
+const Stack = createStackNavigator({
   Home: HomeScreen,
   Offers: OffersScreen
 });
+
+const HomeStack = createStackNavigator(
+  {
+    Stack,
+    QRCodeViewer
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
+  }
+);
 
 HomeStack.navigationOptions = {
   tabBarLabel: "Home",
@@ -127,10 +139,7 @@ const TabBar = ({
 //   }
 // );
 
-export default createSwitchNavigator({
-  HomeStack,
-  Login
-});
+export default HomeStack;
 
 const styles = StyleSheet.create({
   tabbar: {
