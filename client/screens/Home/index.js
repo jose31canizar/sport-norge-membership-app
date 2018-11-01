@@ -11,33 +11,38 @@ import {
 } from "react-native";
 import QRCode from "react-native-qrcode";
 import { styles } from "./style";
-import { withNavigation } from "react-navigation";
-import { FuturaText } from "../../components/StyledText";
-import { data } from "../../mock-data";
+import { withNavigation, DrawerActions } from "react-navigation";
+import { FuturaText } from "../../components/styled-text";
+import { data } from "../../offers-data";
 import Carousel from "react-native-snap-carousel";
-import QRCodeModal from "../../components/QRCodeModal";
+import QRCodeModal from "../../components/qr-code-modal";
 import { Constants, Svg } from "expo";
+import { connect } from "react-redux";
+import HamburgerIcon from "../../components/hamburger-icon";
 
 const Arrow = props => (
   <Svg
     height={25}
     width={16}
-    transform={[{rotate: '-90deg'}]}
+    transform={[{ rotate: "-90deg" }]}
     style={{
-      marginLeft: 'auto'
+      marginLeft: "auto"
     }}
   >
-  <Svg.Path d="M13.6 11.6L9 16.2V1.3c0-1.5-2.3-1.5-2.3 0v14.9l-4.6-4.6C1 10.5-.6 12.2.5 13.2l6.6 6.6c.4.4 1.1.4 1.6 0l6.6-6.6c1-1-.7-2.6-1.7-1.6z" fill="#333"/>
+    <Svg.Path
+      d="M13.6 11.6L9 16.2V1.3c0-1.5-2.3-1.5-2.3 0v14.9l-4.6-4.6C1 10.5-.6 12.2.5 13.2l6.6 6.6c.4.4 1.1.4 1.6 0l6.6-6.6c1-1-.7-2.6-1.7-1.6z"
+      fill="#333"
+    />
   </Svg>
 );
 
-const SectionButton = withNavigation(({ navigation, name }) => (
+const SectionButton = withNavigation(({ navigation, name, route }) => (
   <TouchableOpacity
     style={styles.section_button}
-    onPress={() => navigation.navigate("Offers")}
+    onPress={() => navigation.navigate(route)}
   >
     <FuturaText style={styles.section_button_name}>{name}</FuturaText>
-    <Arrow/>
+    <Arrow />
   </TouchableOpacity>
 ));
 
@@ -49,13 +54,27 @@ const FeaturedOffer = props => (
   </View>
 );
 
-export default class LinksScreen extends React.Component {
+export const HeaderLeftIcon = connect(
+  null,
+  dispatch => ({
+    openDrawer: () => dispatch(DrawerActions.openDrawer()),
+    closeDrawer: () => dispatch(DrawerActions.closeDrawer())
+  })
+)(props => (
+  <HamburgerIcon
+    openDrawer={props.openDrawer}
+    closeDrawer={props.closeDrawer}
+  />
+));
+
+export default class HomeScreen extends React.Component {
   state = {
     text: "http://facebook.github.io/react-native/",
     showQRCodeModal: false
   };
   static navigationOptions = {
-    title: "Links"
+    title: "HOME",
+    headerLeft: <HeaderLeftIcon />
   };
   componentWillMount() {
     this.setState({ width: Dimensions.get("window").width });
@@ -78,7 +97,9 @@ export default class LinksScreen extends React.Component {
             <FuturaText style={styles.h3}>{club}</FuturaText>
             <FuturaText style={styles.h3}>{division}</FuturaText>
           </View>
-          <TouchableOpacity onPress={() => navigate('QRCodeViewer', {text: this.state.text} )}>
+          <TouchableOpacity
+            onPress={() => navigate("QRCodeViewer", { text: this.state.text })}
+          >
             <QRCode
               value={this.state.text}
               size={200}
@@ -106,9 +127,9 @@ export default class LinksScreen extends React.Component {
           keyExtractor={(item, i) => i.toString()}
         />
         <View style={styles.section_buttons}>
-          <SectionButton name="Offers" />
-          <SectionButton name="Your Benefits" />
-          <SectionButton name="Stores" />
+          <SectionButton name="Offers" route="Offers" />
+          <SectionButton name="Your Benefits" route="Offers" />
+          <SectionButton name="Stores" route="Stores" />
         </View>
       </ScrollView>
     );

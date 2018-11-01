@@ -8,10 +8,9 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case "persist/REHYDRATE":
-      const { emailOrPhone, password } = action.payload.auth;
-      console.log(emailOrPhone, password, "rehydrate");
+      const { emailOrPhone, password, autoLoggingIn } = action.payload.auth;
       if (emailOrPhone && password) {
-        return { ...state, emailOrPhone, password };
+        return { ...state, emailOrPhone, password, autoLoggingIn };
       }
       //return empty object to clear
       return state;
@@ -22,7 +21,6 @@ export default function(state = INITIAL_STATE, action) {
     case "LOGIN":
       return state;
     case "LOGIN_SUCCESS":
-      console.log("success!");
       const { emailOrPhone: e, password: p } = action;
       return { ...state, emailOrPhone: e, password: p, autoLoggingIn: true };
     default:

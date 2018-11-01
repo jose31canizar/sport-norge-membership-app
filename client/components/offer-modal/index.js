@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Image, Text } from "react-native";
 import { styles } from "./style";
-import ClosableModal from "../ClosableModal";
+import ClosableModal from "../closable-modal";
 
 export default class Offer extends Component {
   componentDidMount() {}

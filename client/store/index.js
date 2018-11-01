@@ -3,8 +3,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import reducers from "../reducers";
 import storage from "redux-persist/lib/storage";
+import { appNavigatorMiddleware } from "../navigation/main-tab-navigator";
 
-const middlewares = [thunk];
+const middlewares = [thunk, appNavigatorMiddleware];
 
 if (process.env.NODE_ENV === `development`) {
   const { logger } = require(`redux-logger`);

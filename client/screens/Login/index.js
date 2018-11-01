@@ -7,9 +7,9 @@ import {
   AsyncStorage
 } from "react-native";
 import { styles } from "./style";
-import { FuturaText } from "../../components/StyledText";
+import { FuturaText } from "../../components/styled-text";
 import { connect } from "react-redux";
-import { login, retrieve, logout } from "../../actions/AuthActions";
+import { login, retrieve, logout } from "../../actions/auth-actions";
 // import { persistor } from "../../store";
 
 export default connect(

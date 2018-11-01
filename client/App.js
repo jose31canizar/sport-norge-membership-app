@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View, Text } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
-import AppNavigator from "./navigation/AppNavigator";
+import AppNavigator from "./navigation/app-navigator";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { Provider } from "react-redux";
 import store, { persistor } from "./store";

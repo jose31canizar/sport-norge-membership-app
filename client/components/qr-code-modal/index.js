@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, Dimensions } from "react-native";
-import ClosableModal from "../ClosableModal";
+import ClosableModal from "../closable-modal";
 import QRCode from "react-native-qrcode";
 
 export default class QRCodeModal extends Component {
