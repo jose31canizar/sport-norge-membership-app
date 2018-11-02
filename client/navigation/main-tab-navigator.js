@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import RegisterForPushNotifications from "../services/push-notifications";
 import {
   Platform,
   Dimensions,
@@ -123,10 +124,16 @@ let Stacks = createTabNavigator(
 );
 
 class Drawer extends Component {
+  componentDidMount() {
+    RegisterForPushNotifications();
+  }
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Text>GOodbye</Text>
+        <Text>Sport Norge</Text>
+        <Text>Sport Norge</Text>
+        <Text>Sport Norge</Text>
+        <Text>Sport Norge</Text>
       </View>
     );
   }

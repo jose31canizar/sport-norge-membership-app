@@ -1,5 +1,6 @@
 import { API } from "../api";
-import { doSignInWithEmailAndPassword } from "../firebase/auth";
+import { doSignInWithEmailAndPassword, getId } from "../firebase/auth";
+import { doCreateUser } from "../firebase/db";
 
 export const login = ({ emailOrPhone, password }) => dispatch => {
   dispatch({
@@ -8,6 +9,7 @@ export const login = ({ emailOrPhone, password }) => dispatch => {
     password
   });
   return doSignInWithEmailAndPassword(emailOrPhone, password)
+    .then(() => doCreateUser(getId(), "jose canizares", emailOrPhone))
     .then(() => dispatch(loginSuccess({ emailOrPhone, password })))
     .catch(err => console.log(err));
 };

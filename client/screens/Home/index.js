@@ -90,7 +90,7 @@ export default class HomeScreen extends React.Component {
     const club = "Sport Norge";
     const division = "Football";
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.qr_code_container}>
           <View style={styles.caption}>
             <FuturaText style={styles.h1}>{name}</FuturaText>

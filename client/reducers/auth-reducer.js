@@ -8,14 +8,16 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case "persist/REHYDRATE":
-      const { emailOrPhone, password, autoLoggingIn } = action.payload.auth;
-      if (emailOrPhone && password) {
+      if (action.payload) {
+        const { emailOrPhone, password, autoLoggingIn } = action.payload.auth;
+        //return empty object to clear
+        // return {};
         return { ...state, emailOrPhone, password, autoLoggingIn };
       }
-      //return empty object to clear
+
       return state;
     case "persist/PURGE":
-      return INITIAL_STATE;
+      return {};
     case "LOGOUT":
       return INITIAL_STATE;
     case "LOGIN":

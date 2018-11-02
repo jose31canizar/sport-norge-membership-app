@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image, Text, FlatList, TouchableOpacity } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
 import { styles } from "./style";
 import { FuturaText } from "../../components/styled-text";
@@ -10,10 +10,17 @@ export default connect(
   null
 )(
   class Store extends Component {
+    state = {
+      latitude: this.props.stores[0].location.latitude,
+      longitude: this.props.stores[0].location.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421
+    };
     render() {
       const { stores } = this.props;
       return (
         <FlatList
+          showsVerticalScrollIndicator={false}
           ListHeaderComponent={
             <MapView
               style={{
@@ -21,12 +28,18 @@ export default connect(
                 height: 200
               }}
               initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
+                ...this.state
               }}
-            />
+            >
+              <Marker
+                coordinate={{
+                  latitude: this.state.latitude,
+                  longitude: this.state.longitude
+                }}
+                title={"Sport Norge Os"}
+                description={"Store"}
+              />
+            </MapView>
           }
           data={stores}
           keyExtractor={(item, i) => i.toString()}

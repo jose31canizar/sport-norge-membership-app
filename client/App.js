@@ -1,6 +1,13 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View, Text } from "react-native";
-import { AppLoading, Asset, Font, Icon } from "expo";
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  Text,
+  Alert
+} from "react-native";
+import { AppLoading, Asset, Font, Icon, Notifications } from "expo";
 import AppNavigator from "./navigation/app-navigator";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { Provider } from "react-redux";
@@ -8,9 +15,24 @@ import store, { persistor } from "./store";
 
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false
+    isLoadingComplete: false,
+    notification: null
   };
-
+  componentWillMount() {
+    this.notificationSubscription = Notifications.addListener(
+      ({ data: { text }, origin }) => {
+        console.log(origin, text);
+        this.setState({ notification: text });
+        if (origin === "received") {
+          console.log(this.props, text);
+          Alert.alert("new push notification", this.props.exp.notification);
+        } else if (origin === "selected") {
+          // console.log(this.props.exp);
+          // Alert.alert("new push notification", this.props.exp.notification);
+        }
+      }
+    );
+  }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
