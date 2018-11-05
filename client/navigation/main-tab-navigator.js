@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import RegisterForPushNotifications from "../services/push-notifications";
 import {
   Platform,
   Dimensions,
@@ -23,6 +22,7 @@ import TabBarIcon from "../components/tab-bar-icon";
 import HomeScreen from "../screens/home";
 import OffersScreen from "../screens/offers";
 import StoresScreen from "../screens/stores";
+import Drawer from "./drawer";
 
 import QRCodeViewer from "../screens/qr-code-viewer";
 import { connect } from "react-redux";
@@ -123,22 +123,6 @@ let Stacks = createTabNavigator(
   }
 );
 
-class Drawer extends Component {
-  componentDidMount() {
-    RegisterForPushNotifications();
-  }
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Text>Sport Norge</Text>
-        <Text>Sport Norge</Text>
-        <Text>Sport Norge</Text>
-        <Text>Sport Norge</Text>
-      </View>
-    );
-  }
-}
-
 export const appNavigatorMiddleware = createReactNavigationReduxMiddleware(
   "main",
   state => state.nav
@@ -146,13 +130,13 @@ export const appNavigatorMiddleware = createReactNavigationReduxMiddleware(
 
 export const AppNavigator = createDrawerNavigator(
   {
-    Main: Drawer
+    Main: Stacks
   },
   {
     drawerWidth: Dimensions.get("window").width,
     drawerPosition: "left",
     drawerLockMode: "locked-closed",
-    contentComponent: props => <Stacks />
+    contentComponent: props => <Drawer {...props} />
   }
 );
 

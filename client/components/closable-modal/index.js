@@ -48,7 +48,6 @@ export default class ClosableModal extends Component {
     }).start();
   };
   toggleModal = show => {
-    console.log("toggle", show);
     if (show) this.close();
     else this.open();
   };
@@ -68,8 +67,6 @@ export default class ClosableModal extends Component {
       inputRange: [0, 1],
       outputRange: [0, 1]
     });
-
-    console.log(showModal);
 
     return (
       <Animated.View

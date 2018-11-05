@@ -30,7 +30,6 @@ export default connect(
     };
     login = () => {
       const { emailOrPhone, password } = this.state;
-      console.log(this.state, "hello");
       this.props
         .login({ emailOrPhone, password })
         .then(() => this.props.navigation.navigate("HomeStack"));
@@ -41,7 +40,6 @@ export default connect(
     }
     componentDidUpdate(prevState, prevProps) {
       if (this.props.autoLoggingIn) {
-        console.log("updated", this.props);
         this.props.navigation.navigate("HomeStack");
       }
     }

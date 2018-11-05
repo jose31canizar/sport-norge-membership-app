@@ -37,7 +37,6 @@ export default connect(
     render() {
       const { itemData, showModal } = this.state;
       const { offers } = this.props;
-      console.log(offers);
 
       const { navigate } = this.props.navigation;
       return (

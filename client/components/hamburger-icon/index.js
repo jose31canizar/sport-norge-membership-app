@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { TouchableHighlight, Animated, Easing } from "react-native";
+import { connect } from "react-redux";
 import { Svg } from "expo";
 const { G, Circle, Rect, Line } = Svg;
 
@@ -68,18 +69,35 @@ class HamburgerIcon extends Component {
       });
     });
   }
+  componentDidUpdate(prevProps, prevState) {
+    if ((!prevProps.toggled && this.props.toggled) || this.props.force_close) {
+      Animated.timing(this.state.cross, {
+        toValue: 0,
+        duration: 250,
+        delay: 150
+      }).start();
+    } else if (!this.props.toggled) {
+      Animated.timing(this.state.cross, {
+        toValue: 19.5,
+        duration: 250,
+        delay: 150
+      }).start();
+    }
+  }
   handlePress = () => {
     this.setState(
-      (prev, props) => ({ open: !prev.open }),
+      prev => ({ open: !prev.open }),
       () => {
         if (this.state.open) {
           this.props.openDrawer();
+          this.setState({ open: true });
           Animated.timing(this.state.cross, {
             toValue: 19.5,
             duration: 250,
             delay: 150
           }).start();
         } else {
+          this.setState({ open: false });
           Animated.timing(this.state.cross, {
             toValue: 0,
             duration: 250,
@@ -168,4 +186,8 @@ class HamburgerIcon extends Component {
   }
 }
 
-export default HamburgerIcon;
+export default connect(state => ({
+  isDrawerOpen: state.nav.isDrawerOpen,
+  toggled: state.nav.toggled,
+  force_close: state.nav.force_close
+}))(HamburgerIcon);

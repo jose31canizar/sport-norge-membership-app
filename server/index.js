@@ -53,8 +53,6 @@ function sendMessages(tokens) {
     }
   })();
 
-  console.log(tickets);
-
   // Later, after the Expo push notification service has delivered the
   // notifications to Apple or Google (usually quickly, but allow the the service
   // up to 30 minutes when under load), a "receipt" for each notification is
@@ -86,7 +84,6 @@ function sendMessages(tokens) {
     for (let chunk of receiptIdChunks) {
       try {
         let receipts = await expo.getPushNotificationReceiptsAsync(chunk);
-        console.log(receipts), "receipts";
 
         // The receipts specify whether Apple or Google successfully received the
         // notification and information about an error, if one occurred.
@@ -115,11 +112,11 @@ function sendMessages(tokens) {
 }
 
 app.get("/find-club-users", (req, res) => {
-  let x = loadUsers().then(r => res.send(r));
+  loadUsers().then(r => res.send(r));
 });
 
 app.get("/send-messages", (req, res) => {
-  let x = loadTokens()
+  loadTokens()
     .then(tokens => {
       return sendMessages(Object.values(tokens));
     })

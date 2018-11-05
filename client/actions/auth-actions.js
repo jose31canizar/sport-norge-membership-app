@@ -15,7 +15,6 @@ export const login = ({ emailOrPhone, password }) => dispatch => {
 };
 
 const loginSuccess = res => dispatch => {
-  console.log(res, "success");
   dispatch({ type: "LOGIN_SUCCESS", ...res });
 };
 

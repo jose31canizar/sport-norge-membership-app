@@ -21,13 +21,10 @@ export default class App extends React.Component {
   componentWillMount() {
     this.notificationSubscription = Notifications.addListener(
       ({ data: { text }, origin }) => {
-        console.log(origin, text);
         this.setState({ notification: text });
         if (origin === "received") {
-          console.log(this.props, text);
-          Alert.alert("new push notification", this.props.exp.notification);
+          // Alert.alert("new push notification", this.props.exp.notification);
         } else if (origin === "selected") {
-          // console.log(this.props.exp);
           // Alert.alert("new push notification", this.props.exp.notification);
         }
       }

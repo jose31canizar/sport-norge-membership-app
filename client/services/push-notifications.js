@@ -16,8 +16,6 @@ export default async () => {
 
     let token = await Notifications.getExpoPushTokenAsync();
 
-    console.log(token);
-
     return Promise.all([
       doAddToken(token),
       doUpdateUserField("push_notification_token", token)
