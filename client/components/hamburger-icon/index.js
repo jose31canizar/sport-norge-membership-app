@@ -120,6 +120,7 @@ class HamburgerIcon extends Component {
     const transform = [{ translateX }];
 
     //"15.5"
+    const color = "#FFF";
 
     return (
       <TouchableHighlight
@@ -138,7 +139,7 @@ class HamburgerIcon extends Component {
             x2="47.5"
             y2="2.5"
             fill="none"
-            stroke="#000"
+            stroke={color}
             strokeLineCap="round"
             strokeMiterLimit="10"
             strokeWidth="5"
@@ -150,7 +151,7 @@ class HamburgerIcon extends Component {
             x2="47.5"
             y2="15.5"
             fill="none"
-            stroke="#000"
+            stroke={color}
             strokeLineCap="round"
             strokeMiterLimit="10"
             strokeWidth="5"
@@ -162,7 +163,7 @@ class HamburgerIcon extends Component {
             x2="47.5"
             y2="15.5"
             fill="none"
-            stroke="#000"
+            stroke={color}
             strokeLineCap="round"
             strokeMiterLimit="10"
             strokeWidth="5"
@@ -174,7 +175,7 @@ class HamburgerIcon extends Component {
             x2="17"
             y2="28.5"
             fill="none"
-            stroke="#000"
+            stroke={color}
             strokeLineCap="round"
             strokeMiterLimit="10"
             strokeWidth="5"

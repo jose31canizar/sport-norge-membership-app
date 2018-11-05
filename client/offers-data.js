@@ -2,8 +2,8 @@ export const data = [
   {
     store: "Sports Direct",
     percentage: "25",
-    domain: "Workwear",
-    categories: ["boots"],
+    domain: "ordinœre varer",
+    categories: ["ordinœre varer"],
     image:
       "https://no.sportsdirect.com/images/marketing/sd-mens-lp-workwear-ss18.jpg",
     description:

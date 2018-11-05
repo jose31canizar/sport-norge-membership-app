@@ -3,13 +3,23 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    padding: 20
   },
   qr_code_container: {
     flex: 1,
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    paddingRight: 25,
+    borderRadius: 15
+  },
+  caption: {
+    justifyContent: "flex-start",
+    padding: 10
   },
   input: {
     height: 40,
@@ -30,34 +40,48 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 5,
     backgroundColor: "white",
-    justifyContent: 'center',
-    flexDirection: 'row'
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 5
   },
   section_button_name: {
     fontSize: 21
   },
   featured_offers: {
-    paddingVertical: 40,
-    zIndex: -1,
-    flex: 1
+    paddingBottom: 20,
+    zIndex: -1
   },
   featured_offer: {
-    flex: 1,
-    justifyContent: "center"
+    margin: 15,
+    borderRadius: 10,
+    overflow: "hidden",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white"
   },
   featured_offer_image: {
-    flex: 1,
-    height: 200
+    width: "100%",
+    resizeMode: "cover",
+    height: 120
+  },
+  featured_offer_caption: {
+    padding: 20,
+    justifyContent: "center"
   },
   h1: {
     fontSize: 21
   },
+  h2: {
+    fontSize: 19
+  },
   h3: { fontSize: 18 },
-  caption: {
-    justifyContent: "flex-start",
-    padding: 60,
-    paddingLeft: 110,
-    flex: 1,
-    width: "100%"
+
+  shadow: {
+    borderWidth: 1,
+    borderColor: "rgba(222, 224, 226, 0.5)",
+    shadowOffset: { width: 0, height: 8 },
+    shadowColor: "rgba(222, 224, 226, 0.95)",
+    shadowRadius: 9,
+    shadowOpacity: 1.0
   }
 });

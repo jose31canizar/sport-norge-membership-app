@@ -7,7 +7,8 @@ import {
   ScrollView,
   Dimensions,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from "react-native";
 import QRCode from "react-native-qrcode";
 import { styles } from "./style";
@@ -19,6 +20,7 @@ import QRCodeModal from "../../components/qr-code-modal";
 import { Constants, Svg } from "expo";
 import { connect } from "react-redux";
 import HamburgerIcon from "../../components/hamburger-icon";
+import { Icon } from "expo";
 
 const Arrow = props => (
   <Svg
@@ -47,10 +49,29 @@ const SectionButton = withNavigation(({ navigation, name, route }) => (
 ));
 
 const FeaturedOffer = props => (
-  <View style={styles.featured_offer}>
+  <View style={[styles.featured_offer, styles.shadow]}>
     <Image source={{ uri: props.image }} style={styles.featured_offer_image} />
-    <FuturaText>{props.store}</FuturaText>
-    <FuturaText>{props.percentage}%</FuturaText>
+    <View
+      style={[
+        {
+          position: "absolute",
+          borderRadius: "50%",
+          width: 50,
+          height: 50,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+          bottom: 55
+        },
+        styles.shadow
+      ]}
+    >
+      <Icon.Ionicons name="ios-home-outline" size={26} color="orange" />
+    </View>
+    <View style={styles.featured_offer_caption}>
+      <FuturaText style={styles.h2}>{props.percentage}% rabatt</FuturaText>
+      <FuturaText styles={styles.h3}>{props.domain}</FuturaText>
+    </View>
   </View>
 );
 
@@ -73,8 +94,10 @@ export default class HomeScreen extends React.Component {
     showQRCodeModal: false
   };
   static navigationOptions = {
-    title: "HOME",
-    headerLeft: <HeaderLeftIcon />
+    title: "SPORT NORGE",
+    headerLeft: <HeaderLeftIcon />,
+    headerTitleStyle: { color: "white" },
+    headerStyle: { backgroundColor: "black" }
   };
   componentWillMount() {
     this.setState({ width: Dimensions.get("window").width });
@@ -86,44 +109,59 @@ export default class HomeScreen extends React.Component {
   render() {
     const { width, showQRCodeModal } = this.state;
     const { navigate } = this.props.navigation;
-    const name = "Jose Canizares";
-    const club = "Sport Norge";
-    const division = "Football";
+    const club = "IL Bjarg";
+    const divisions = ["Fotball", "Håndball", "Friidrett"];
     return (
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <View style={styles.qr_code_container}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <FuturaText style={styles.h3}>Ditt medlemsbevis</FuturaText>
+        </View>
+        <View style={[styles.qr_code_container, styles.shadow]}>
           <View style={styles.caption}>
-            <FuturaText style={styles.h1}>{name}</FuturaText>
-            <FuturaText style={styles.h3}>{club}</FuturaText>
-            <FuturaText style={styles.h3}>{division}</FuturaText>
+            <FuturaText style={styles.h1}>{club}</FuturaText>
+            <View
+              style={{
+                borderBottomColor: "black",
+                marginVertical: 10,
+                width: "50%",
+                borderBottomWidth: 2
+              }}
+            />
+            {divisions.map((division, i) => (
+              <FuturaText style={styles.h3}>{division}</FuturaText>
+            ))}
           </View>
           <TouchableOpacity
             onPress={() => navigate("QRCodeViewer", { text: this.state.text })}
           >
             <QRCode
               value={this.state.text}
-              size={200}
+              size={120}
               bgColor="#345962"
               fgColor="white"
             />
           </TouchableOpacity>
         </View>
-        <Carousel
-          loop
-          slideInterpolatedStyle={(index, animatedValue, carouselProps) => {
-            return {
-              opacity: animatedValue.interpolate({
-                inputRange: [-1, 0, 1],
-                outputRange: [0, 0.5, 1],
-                extrapolate: "clamp"
-              })
-            };
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: 10
           }}
-          containerCustomStyle={styles.featured_offers}
+        >
+          <FuturaText style={styles.h3}>
+            Du har følgende medlemsfordeler
+          </FuturaText>
+        </View>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          contentContainerStyle={styles.featured_offers}
           data={data}
           renderItem={({ item }) => <FeaturedOffer {...item} />}
-          sliderWidth={width}
-          itemWidth={width * 0.7}
           keyExtractor={(item, i) => i.toString()}
         />
         <View style={styles.section_buttons}>
@@ -135,3 +173,21 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+// <Carousel
+//           slideInterpolatedStyle={(index, animatedValue, carouselProps) => {
+//             return {
+//               opacity: animatedValue.interpolate({
+//                 inputRange: [-1, 0, 1],
+//                 outputRange: [0, 1, 1],
+//                 extrapolate: "clamp"
+//               })
+//             };
+//           }}
+//           containerCustomStyle={styles.featured_offers}
+//           data={data}
+//           renderItem={({ item }) => <FeaturedOffer {...item} />}
+//           sliderWidth={width}
+//           itemWidth={width * 0.45}
+//           keyExtractor={(item, i) => i.toString()}
+//         />
