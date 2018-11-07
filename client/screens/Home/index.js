@@ -28,22 +28,28 @@ const Arrow = props => (
     width={16}
     transform={[{ rotate: "-90deg" }]}
     style={{
-      marginLeft: "auto"
+      marginLeft: "auto",
+      position: "absolute",
+      right: 0
     }}
   >
     <Svg.Path
       d="M13.6 11.6L9 16.2V1.3c0-1.5-2.3-1.5-2.3 0v14.9l-4.6-4.6C1 10.5-.6 12.2.5 13.2l6.6 6.6c.4.4 1.1.4 1.6 0l6.6-6.6c1-1-.7-2.6-1.7-1.6z"
-      fill="#333"
+      fill="white"
     />
   </Svg>
 );
 
-const SectionButton = withNavigation(({ navigation, name, route }) => (
+const MemberService = withNavigation(({ navigation, name, route }) => (
   <TouchableOpacity
-    style={styles.section_button}
+    style={[styles.member_service, styles.shadow]}
     onPress={() => navigation.navigate(route)}
   >
-    <FuturaText style={styles.section_button_name}>{name}</FuturaText>
+    <Image
+      style={styles.member_service_image}
+      source={require("../../assets/images/vikafjell-bryggen.png")}
+    />
+    <FuturaText style={styles.member_service_name}>{name}</FuturaText>
     <Arrow />
   </TouchableOpacity>
 ));
@@ -111,6 +117,20 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     const club = "IL Bjarg";
     const divisions = ["Fotball", "Håndball", "Friidrett"];
+    const services = [
+      {
+        name: "Offers",
+        route: "Offers"
+      },
+      {
+        name: "Your Benefits",
+        route: "Offers"
+      },
+      {
+        name: "Stores",
+        route: "Stores"
+      }
+    ];
     return (
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View
@@ -164,11 +184,23 @@ export default class HomeScreen extends React.Component {
           renderItem={({ item }) => <FeaturedOffer {...item} />}
           keyExtractor={(item, i) => i.toString()}
         />
-        <View style={styles.section_buttons}>
-          <SectionButton name="Offers" route="Offers" />
-          <SectionButton name="Your Benefits" route="Offers" />
-          <SectionButton name="Stores" route="Stores" />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingVertical: 10
+          }}
+        >
+          <FuturaText style={styles.h3}>Medlemstilbud November</FuturaText>
         </View>
+        <FlatList
+          style={styles.member_services}
+          data={services}
+          renderItem={({ item }) => (
+            <MemberService name={item.name} route={item.route} />
+          )}
+        />
       </ScrollView>
     );
   }

@@ -19,18 +19,18 @@ import {
   createReactNavigationReduxMiddleware
 } from "react-navigation-redux-helpers";
 import TabBarIcon from "../components/tab-bar-icon";
-import HomeScreen from "../screens/home";
-import OffersScreen from "../screens/offers";
-import StoresScreen from "../screens/stores";
+import Home from "../screens/home";
+import Offers from "../screens/offers";
+import Stores from "../screens/stores";
 import Drawer from "./drawer";
 
 import QRCodeViewer from "../screens/qr-code-viewer";
 import { connect } from "react-redux";
 
 const Stack = createStackNavigator({
-  Home: HomeScreen,
-  Offers: OffersScreen,
-  Stores: StoresScreen
+  Home,
+  Offers,
+  Stores
 });
 
 const HomeStack = createStackNavigator(

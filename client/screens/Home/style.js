@@ -29,23 +29,23 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5
   },
-  section_buttons: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: "#e5e5e5"
+  member_services: {
+    flex: 1
   },
-  section_button: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    flex: 1,
-    marginVertical: 5,
+  member_service: {
     backgroundColor: "white",
     justifyContent: "center",
+    alignItems: "center",
     flexDirection: "row",
     borderRadius: 5
   },
-  section_button_name: {
-    fontSize: 21
+  member_service_name: {
+    fontSize: 21,
+    color: "white",
+    position: "absolute"
+  },
+  member_service_image: {
+    width: "100%"
   },
   featured_offers: {
     paddingBottom: 20,

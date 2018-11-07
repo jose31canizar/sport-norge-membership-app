@@ -6,10 +6,11 @@ let initialState = AppNavigator.router.getStateForAction(
 );
 
 function nav(state = initialState, action) {
-  console.log("action.type", action.type);
+  console.log(action.type);
   if (
     action.type === "Navigation/TOGGLE_DRAWER" ||
-    action.type === "Navigation/FORCE_CLOSE_DRAWER"
+    action.type === "Navigation/FORCE_CLOSE_DRAWER" ||
+    action.type === "Navigation/COMPLETE_TRANSITION"
   ) {
     return {
       ...state,
@@ -27,7 +28,6 @@ function nav(state = initialState, action) {
     };
   }
   const newState = AppNavigator.router.getStateForAction(action, state);
-  // console.log(newState);
 
   return (
     {

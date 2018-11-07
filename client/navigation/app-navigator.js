@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { createSwitchNavigator } from "react-navigation";
-import Login from "../screens/login";
+import AuthNavigator from "./auth-navigator";
 import MainTabNavigator from "./main-tab-navigator";
 import { connect } from "react-redux";
 import {
@@ -11,14 +11,14 @@ import {
 export default connect(state => ({
   autoLoggingIn: state.auth.autoLoggingIn
 }))(props => {
-  let X = createSwitchNavigator(
+  let App = createSwitchNavigator(
     {
-      Login,
+      Auth: AuthNavigator,
       Main: MainTabNavigator
     },
     {
-      initialRouteName: props.autoLoggingIn ? "Main" : "Login"
+      initialRouteName: props.autoLoggingIn ? "Main" : "Auth"
     }
   );
-  return <X />;
+  return <App />;
 });
