@@ -6,7 +6,13 @@ let initialState = AppNavigator.router.getStateForAction(
 );
 
 function nav(state = initialState, action) {
-  console.log(action.type);
+  // console.log(action.type);
+  if (action.type === "TOGGLE_TAB_BAR") {
+    return {
+      ...state,
+      openTabBar: !state.openTabBar
+    };
+  }
   if (
     action.type === "Navigation/TOGGLE_DRAWER" ||
     action.type === "Navigation/FORCE_CLOSE_DRAWER" ||
@@ -33,6 +39,7 @@ function nav(state = initialState, action) {
     {
       ...newState,
       toggled: false,
+      openTabBar: true,
       force_close: action.type === "Navigation/DRAWER_CLOSED" ? true : false
     } || state
   );

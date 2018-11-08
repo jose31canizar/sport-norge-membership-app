@@ -27,6 +27,9 @@ export default connect(
   null
 )(
   class Offers extends Component {
+    static navigationOptions = {
+      headerTitle: "Offers"
+    };
     state = {
       itemData: {},
       showModal: false

@@ -94,117 +94,147 @@ export const HeaderLeftIcon = connect(
   />
 ));
 
-export default class HomeScreen extends React.Component {
-  state = {
-    text: "http://facebook.github.io/react-native/",
-    showQRCodeModal: false
-  };
-  static navigationOptions = {
-    title: "SPORT NORGE",
-    headerLeft: <HeaderLeftIcon />,
-    headerTitleStyle: { color: "white" },
-    headerStyle: { backgroundColor: "black" }
-  };
-  componentWillMount() {
-    this.setState({ width: Dimensions.get("window").width });
-  }
-  toggleModal = show => {
-    this.setState({ showQRCodeModal: show });
-  };
+const toggleTabBar = dispatch => dispatch({ type: "TOGGLE_TAB_BAR" });
 
-  render() {
-    const { width, showQRCodeModal } = this.state;
-    const { navigate } = this.props.navigation;
-    const club = "IL Bjarg";
-    const divisions = ["Fotball", "Håndball", "Friidrett"];
-    const services = [
-      {
-        name: "Offers",
-        route: "Offers"
-      },
-      {
-        name: "Your Benefits",
-        route: "Offers"
-      },
-      {
-        name: "Stores",
-        route: "Stores"
-      }
-    ];
-    return (
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+export default connect(
+  null,
+  dispatch => ({ toggleTabBar: () => dispatch(toggleTabBar) })
+)(
+  class HomeScreen extends React.Component {
+    state = {
+      text: "http://facebook.github.io/react-native/",
+      showQRCodeModal: false
+    };
+    static navigationOptions = {
+      title: "SPORT NORGE",
+      headerLeft: <HeaderLeftIcon />,
+      headerTitleStyle: { color: "white" },
+      headerStyle: { backgroundColor: "black" }
+    };
+    componentWillMount() {
+      this.setState({ width: Dimensions.get("window").width });
+    }
+    toggleModal = show => {
+      this.setState({ showQRCodeModal: show });
+    };
+    onScroll = event => {
+      const offset = event.nativeEvent.contentOffset.y;
+      const direction = offset > this.state.offset ? "down" : "up";
+      this.setState(prev => {
+        if (prev.direction !== direction) {
+          this.props.toggleTabBar();
+          return {
+            offset,
+            direction
+          };
+        } else {
+          return {
+            offset
+          };
+        }
+      });
+    };
+
+    render() {
+      const { width, showQRCodeModal } = this.state;
+      const { navigate } = this.props.navigation;
+      const club = "IL Bjarg";
+      const divisions = ["Fotball", "Håndball", "Friidrett"];
+      const services = [
+        {
+          name: "Offers",
+          route: "Offers"
+        },
+        {
+          name: "Your Benefits",
+          route: "Offers"
+        },
+        {
+          name: "Stores",
+          route: "Stores"
+        }
+      ];
+      return (
+        <ScrollView
+          onScroll={this.onScroll}
+          showsVerticalScrollIndicator={false}
+          style={styles.container}
         >
-          <FuturaText style={styles.h3}>Ditt medlemsbevis</FuturaText>
-        </View>
-        <View style={[styles.qr_code_container, styles.shadow]}>
-          <View style={styles.caption}>
-            <FuturaText style={styles.h1}>{club}</FuturaText>
-            <View
-              style={{
-                borderBottomColor: "black",
-                marginVertical: 10,
-                width: "50%",
-                borderBottomWidth: 2
-              }}
-            />
-            {divisions.map((division, i) => (
-              <FuturaText style={styles.h3}>{division}</FuturaText>
-            ))}
-          </View>
-          <TouchableOpacity
-            onPress={() => navigate("QRCodeViewer", { text: this.state.text })}
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <QRCode
-              value={this.state.text}
-              size={120}
-              bgColor="#345962"
-              fgColor="white"
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: 10
-          }}
-        >
-          <FuturaText style={styles.h3}>
-            Du har følgende medlemsfordeler
-          </FuturaText>
-        </View>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          contentContainerStyle={styles.featured_offers}
-          data={data}
-          renderItem={({ item }) => <FeaturedOffer {...item} />}
-          keyExtractor={(item, i) => i.toString()}
-        />
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingVertical: 10
-          }}
-        >
-          <FuturaText style={styles.h3}>Medlemstilbud November</FuturaText>
-        </View>
-        <FlatList
-          style={styles.member_services}
-          data={services}
-          renderItem={({ item }) => (
-            <MemberService name={item.name} route={item.route} />
-          )}
-        />
-      </ScrollView>
-    );
+            <FuturaText style={styles.h3}>Ditt medlemsbevis</FuturaText>
+          </View>
+          <View style={[styles.qr_code_container, styles.shadow]}>
+            <View style={styles.caption}>
+              <FuturaText style={styles.h1}>{club}</FuturaText>
+              <View
+                style={{
+                  borderBottomColor: "black",
+                  marginVertical: 10,
+                  width: "50%",
+                  borderBottomWidth: 2
+                }}
+              />
+              {divisions.map((division, i) => (
+                <FuturaText style={styles.h3}>{division}</FuturaText>
+              ))}
+            </View>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("QRCodeViewer", { text: this.state.text })
+              }
+            >
+              <QRCode
+                value={this.state.text}
+                size={120}
+                bgColor="#345962"
+                fgColor="white"
+              />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: 10
+            }}
+          >
+            <FuturaText style={styles.h3}>
+              Du har følgende medlemsfordeler
+            </FuturaText>
+          </View>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            contentContainerStyle={styles.featured_offers}
+            data={data}
+            renderItem={({ item }) => <FeaturedOffer {...item} />}
+            keyExtractor={(item, i) => i.toString()}
+          />
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingVertical: 10
+            }}
+          >
+            <FuturaText style={styles.h3}>Medlemstilbud November</FuturaText>
+          </View>
+          <FlatList
+            style={styles.member_services}
+            data={services}
+            renderItem={({ item }) => (
+              <MemberService name={item.name} route={item.route} />
+            )}
+          />
+        </ScrollView>
+      );
+    }
   }
-}
+);
 
 // <Carousel
 //           slideInterpolatedStyle={(index, animatedValue, carouselProps) => {

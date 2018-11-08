@@ -19,19 +19,36 @@ import {
   createReactNavigationReduxMiddleware
 } from "react-navigation-redux-helpers";
 import TabBarIcon from "../components/tab-bar-icon";
-import Home from "../screens/home";
-import Offers from "../screens/offers";
-import Stores from "../screens/stores";
+import { TabBar } from "./tab-bar";
 import Drawer from "./drawer";
 
-import QRCodeViewer from "../screens/qr-code-viewer";
+import {
+  Home,
+  Activity,
+  Discover,
+  Profile,
+  Offers,
+  Stores,
+  QRCodeViewer
+} from "../screens";
+
 import { connect } from "react-redux";
 
-const Stack = createStackNavigator({
-  Home,
-  Offers,
-  Stores
-});
+const Stack = createStackNavigator(
+  {
+    Home,
+    Offers,
+    Stores
+  },
+  {
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: "black"
+      },
+      headerTintColor: "white"
+    }
+  }
+);
 
 const HomeStack = createStackNavigator(
   {
@@ -44,67 +61,7 @@ const HomeStack = createStackNavigator(
   }
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: "Home",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === "ios"
-          ? `ios-home${focused ? "" : "-outline"}`
-          : "md-home"
-      }
-    />
-  )
-};
-
-const TabBar = props => <View />;
-
-// const TabBar = ({
-//   navigation,
-//   renderIcon,
-//   activeTintColor,
-//   inactiveTintColor,
-//   jumpTo,
-//   navigation: {
-//     state: { routes }
-//   }
-// }) => {
-//   return (
-//     <View
-//       style={{
-//         flexDirection: "row",
-//         justifyContent: "space-around",
-//         padding: 20
-//       }}
-//     >
-//       {routes &&
-//         routes.map((route, index) => {
-//           const focused = index === navigation.state.index;
-//           const tintColor = focused ? activeTintColor : inactiveTintColor;
-
-//           return (
-//             <TouchableWithoutFeedback
-//               key={route.key}
-//               style={styles.tab}
-//               onPress={() => jumpTo(route.key)}
-//             >
-//               <View style={styles.tab}>
-//                 {renderIcon({
-//                   route,
-//                   index,
-//                   focused,
-//                   tintColor
-//                 })}
-//               </View>
-//             </TouchableWithoutFeedback>
-//           );
-//         })}
-//     </View>
-//   );
-// };
-
-let Stacks = createTabNavigator(
+const HomeStacks = createTabNavigator(
   {
     Stack1: HomeStack,
     Stack2: HomeStack,
@@ -117,11 +74,77 @@ let Stacks = createTabNavigator(
     Stack9: HomeStack
   },
   {
-    tabBarComponent: TabBar,
+    tabBarComponent: () => <View />,
     swipeEnabled: true,
     animationEnabled: true
   }
 );
+
+const Piles = [
+  {
+    name: "Home",
+    routes: { HomeStacks },
+    headerTitle: "Home"
+  },
+  {
+    name: "Activity",
+    routes: { Activity },
+    headerTitle: "Activity"
+  },
+  {
+    name: "Discover",
+    routes: { Discover },
+    headerTitle: "Discover"
+  },
+  {
+    name: "Profile",
+    routes: { Profile },
+    headerTitle: "Profile"
+  }
+];
+
+export const Stacks = Piles.reduce(
+  (acc, { name, routes, headerTitle }) => ({
+    ...acc,
+    [name]: {
+      screen: createStackNavigator(
+        Object.entries(routes).reduce(
+          (acc, [routeKey, screen]) => ({
+            ...acc,
+            [routeKey]: {
+              screen
+            }
+          }),
+          {}
+        ),
+        {
+          navigationOptions: {
+            header: null
+          }
+        }
+      ),
+      navigationOptions: {
+        tabBarIcon: ({ focused }) => (
+          <TabBarIcon
+            name={headerTitle}
+            focused={focused}
+            fill="transparent"
+            stroke="#c4cbce"
+            strokeWidth={2}
+          />
+        )
+      }
+    }
+  }),
+  {}
+);
+
+const AppStacks = createBottomTabNavigator(Stacks, {
+  tabBarComponent: TabBar,
+  tabBarOptions: {
+    style: { backgroundColor: "black", position: "absolute", bottom: 0 }
+  }
+});
 
 export const appNavigatorMiddleware = createReactNavigationReduxMiddleware(
   "main",
@@ -130,7 +153,7 @@ export const appNavigatorMiddleware = createReactNavigationReduxMiddleware(
 
 export const AppNavigator = createDrawerNavigator(
   {
-    Main: Stacks
+    Main: AppStacks
   },
   {
     drawerWidth: Dimensions.get("window").width,
@@ -162,11 +185,5 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "grey",
     backgroundColor: "#333"
-  },
-  tab: {
-    alignSelf: "stretch",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
   }
 });

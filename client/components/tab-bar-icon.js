@@ -1,19 +1,16 @@
 import React from "react";
-import { Icon } from "expo";
+import { Svg } from "expo";
+import paths from "./svgs";
 
-import Colors from "../constants/colors";
+const Icon = ({ name, fill, stroke, strokeWidth, style, width, height }) => (
+  <Svg
+    style={style}
+    viewBox="0 0 19.53 19.55"
+    height={height || "26"}
+    width={width || "24"}
+  >
+    {paths({ fill, stroke, strokeWidth })[name]}
+  </Svg>
+);
 
-export default class TabBarIcon extends React.Component {
-  render() {
-    return (
-      <Icon.Ionicons
-        name={this.props.name}
-        size={26}
-        style={{ marginBottom: -3 }}
-        color={
-          this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault
-        }
-      />
-    );
-  }
-}
+export default Icon;

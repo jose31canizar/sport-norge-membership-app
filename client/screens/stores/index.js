@@ -10,6 +10,9 @@ export default connect(
   null
 )(
   class Store extends Component {
+    static navigationOptions = {
+      headerTitle: "Stores"
+    };
     state = {
       latitude: this.props.stores[0].location.latitude,
       longitude: this.props.stores[0].location.longitude,
