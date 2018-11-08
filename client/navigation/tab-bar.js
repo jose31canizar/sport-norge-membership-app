@@ -8,15 +8,15 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-export const TabBar = connect(state => ({ openTabBar: state.nav.openTabBar }))(
+export const TabBar = connect(state => ({ direction: state.nav.direction }))(
   class extends Component {
     state = {
       animatedValue: new Animated.Value(0)
     };
     componentDidUpdate(prevProps, prevState) {
-      if (this.props.openTabBar && !prevProps.openTabBar) {
+      if (this.props.direction === "down") {
         this.slideDown();
-      } else if (!this.props.openTabBar && prevProps.openTabBar) {
+      } else if (this.props.direction === "up") {
         this.slideUp();
       }
     }

@@ -94,16 +94,20 @@ export const HeaderLeftIcon = connect(
   />
 ));
 
-const toggleTabBar = dispatch => dispatch({ type: "TOGGLE_TAB_BAR" });
+const setTabBarState = direction => dispatch =>
+  dispatch({ type: "SET_TAB_BAR_STATE", direction });
 
 export default connect(
   null,
-  dispatch => ({ toggleTabBar: () => dispatch(toggleTabBar) })
+  dispatch => ({
+    setTabBarState: direction => dispatch(setTabBarState(direction))
+  })
 )(
   class HomeScreen extends React.Component {
     state = {
       text: "http://facebook.github.io/react-native/",
-      showQRCodeModal: false
+      showQRCodeModal: false,
+      direction: "up"
     };
     static navigationOptions = {
       title: "SPORT NORGE",
@@ -117,22 +121,16 @@ export default connect(
     toggleModal = show => {
       this.setState({ showQRCodeModal: show });
     };
+    componentDidUpdate(prevProps, prevState) {
+      const { direction } = this.state;
+      if (prevState.direction !== direction) {
+        this.props.setTabBarState(direction);
+      }
+    }
     onScroll = event => {
       const offset = event.nativeEvent.contentOffset.y;
       const direction = offset > this.state.offset ? "down" : "up";
-      this.setState(prev => {
-        if (prev.direction !== direction) {
-          this.props.toggleTabBar();
-          return {
-            offset,
-            direction
-          };
-        } else {
-          return {
-            offset
-          };
-        }
-      });
+      this.setState({ offset, direction });
     };
 
     render() {
