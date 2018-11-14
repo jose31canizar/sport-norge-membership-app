@@ -1,6 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
 import {
-  Text,
   View,
   Image,
   TextInput,
@@ -20,6 +19,7 @@ import QRCodeModal from "../../components/qr-code-modal";
 import { Constants, Svg } from "expo";
 import { connect } from "react-redux";
 import HamburgerIcon from "../../components/hamburger-icon";
+import withTabBarDetection from "../../components/with-tab-bar-detection";
 import { Icon } from "expo";
 
 const Arrow = props => (
@@ -94,26 +94,17 @@ export const HeaderLeftIcon = connect(
   />
 ));
 
-const setTabBarState = direction => dispatch =>
-  dispatch({ type: "SET_TAB_BAR_STATE", direction });
-
-export default connect(
-  null,
-  dispatch => ({
-    setTabBarState: direction => dispatch(setTabBarState(direction))
-  })
-)(
-  class HomeScreen extends React.Component {
+export default withTabBarDetection(
+  {
+    title: "SPORT NORGE",
+    headerLeft: <HeaderLeftIcon />,
+    headerTitleStyle: { color: "white" },
+    headerStyle: { backgroundColor: "black" }
+  },
+  class HomeScreen extends Component {
     state = {
       text: "http://facebook.github.io/react-native/",
-      showQRCodeModal: false,
-      direction: "up"
-    };
-    static navigationOptions = {
-      title: "SPORT NORGE",
-      headerLeft: <HeaderLeftIcon />,
-      headerTitleStyle: { color: "white" },
-      headerStyle: { backgroundColor: "black" }
+      showQRCodeModal: false
     };
     componentWillMount() {
       this.setState({ width: Dimensions.get("window").width });
@@ -121,18 +112,6 @@ export default connect(
     toggleModal = show => {
       this.setState({ showQRCodeModal: show });
     };
-    componentDidUpdate(prevProps, prevState) {
-      const { direction } = this.state;
-      if (prevState.direction !== direction) {
-        this.props.setTabBarState(direction);
-      }
-    }
-    onScroll = event => {
-      const offset = event.nativeEvent.contentOffset.y;
-      const direction = offset > this.state.offset ? "down" : "up";
-      this.setState({ offset, direction });
-    };
-
     render() {
       const { width, showQRCodeModal } = this.state;
       const { navigate } = this.props.navigation;
@@ -154,7 +133,7 @@ export default connect(
       ];
       return (
         <ScrollView
-          onScroll={this.onScroll}
+          onScroll={this.props.onScroll}
           showsVerticalScrollIndicator={false}
           style={styles.container}
         >

@@ -107,7 +107,7 @@ export const data = [
     store: "Sport Norge Askøy",
     categories: [],
     image: "https://www.sportnorge.no/sites/default/files/askoy.jpg",
-    description: "En sportsbutikk på Knarvik for deg som liker å nyte Norge.",
+    description: "En sportsbutikk på Askøy for deg som liker å nyte Norge.",
     location: {
       latitude: 60.422352,
       longitude: 5.203002

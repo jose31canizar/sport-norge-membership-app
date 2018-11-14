@@ -5,6 +5,7 @@ import { FuturaText } from "../../components/styled-text";
 import { Svg } from "expo";
 import Offer from "../../components/offer-modal";
 import { connect } from "react-redux";
+import withTabBarDetection from "../../components/with-tab-bar-detection";
 
 const OfferPercentage = props => (
   <Svg
@@ -20,16 +21,11 @@ const OfferPercentage = props => (
   </Svg>
 );
 
-export default connect(
-  state => ({
-    offers: state.offer.offers
-  }),
-  null
-)(
+export default withTabBarDetection(
+  {
+    headerTitle: "Offers"
+  },
   class Offers extends Component {
-    static navigationOptions = {
-      headerTitle: "Offers"
-    };
     state = {
       itemData: {},
       showModal: false
@@ -46,6 +42,7 @@ export default connect(
         <View>
           <FlatList
             data={offers}
+            onScroll={this.props.onScroll}
             keyExtractor={(item, i) => i.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
@@ -76,5 +73,8 @@ export default connect(
         </View>
       );
     }
-  }
+  },
+  state => ({
+    offers: state.offer.offers
+  })
 );

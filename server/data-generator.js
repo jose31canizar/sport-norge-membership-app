@@ -24,7 +24,8 @@ let results = names.map(name => ({
   name,
   username: `@${name.toLowerCase()}`,
   email: `${name}@gmail.com`,
-  password: "123456"
+  password: "123456",
+  status: "activated"
 }));
 
 console.log(results);
