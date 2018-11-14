@@ -30,7 +30,7 @@ const Arrow = props => (
     style={{
       marginLeft: "auto",
       position: "absolute",
-      right: 0
+      right: 20
     }}
   >
     <Svg.Path
@@ -47,7 +47,7 @@ const MemberService = withNavigation(({ navigation, name, route }) => (
   >
     <Image
       style={styles.member_service_image}
-      source={require("../../assets/images/vikafjell-bryggen.png")}
+      source={require(`../../assets/images/stores.jpg`)}
     />
     <FuturaText style={styles.member_service_name}>{name}</FuturaText>
     <Arrow />

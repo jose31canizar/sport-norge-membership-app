@@ -37,7 +37,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    borderRadius: 5
+    borderRadius: 5,
+    height: 200,
+    overflow: "hidden",
+    marginVertical: 5
   },
   member_service_name: {
     fontSize: 21,
@@ -45,7 +48,7 @@ export const styles = StyleSheet.create({
     position: "absolute"
   },
   member_service_image: {
-    width: "100%"
+    height: 200
   },
   featured_offers: {
     paddingBottom: 20,
