@@ -41,6 +41,7 @@ export default withTabBarDetection(
       return (
         <View>
           <FlatList
+            initialNumToRender={6}
             data={offers}
             onScroll={this.props.onScroll}
             keyExtractor={(item, i) => i.toString()}

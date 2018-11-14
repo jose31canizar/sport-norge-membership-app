@@ -11,11 +11,7 @@ let memberSchema = extendSchema(
   {
     activation_code: { type: String, required: true },
     qr_code: { type: String, required: true },
-    clubs: [{ type: Schema.ObjectId, ref: Club }],
-    divisions: [{ type: Schema.ObjectId, ref: Division }],
-    privileges: { type: String, required: true },
-    last_login: { type: Date, required: true },
-    status: { type: String, required: true }
+    last_login: { type: Date, required: true }
   },
   { collection: "sport.norge.members" }
 );

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./models/user");
-const OutfitsData = require("./outfits-data");
-const ItemsData = require("./items-data");
+const DivisionsData = require("./divisions-data");
+const ClubsData = require("./items-data");
 var connection = mongoose.connect("mongodb://localhost:27017/sport-norge");
 
 let names = [
@@ -25,6 +25,9 @@ let results = names.map(name => ({
   username: `@${name.toLowerCase()}`,
   email: `${name}@gmail.com`,
   password: "123456",
+  activation_code: "123456",
+  qr_code: "123456",
+  last_login: Date.now(),
   status: "activated"
 }));
 
@@ -39,34 +42,15 @@ results.map(user => {
         console.log("err:", err);
       }
 
-      let itemPromises = items.map(
-        ({
-          color,
-          source,
-          name,
-          image_url,
-          categories,
-          styles,
-          occasions,
-          seasons
-        }) => {
-          const item = new Item({
-            owner: newUser._id,
-            color,
-            source,
-            name,
-            image_url,
-            categories,
-            styles,
-            occasions,
-            seasons
-          });
-          return item.save();
-        }
-      );
+      let clubPromises = ClubsData.map(({ name }) => {
+        const club = new Club({
+          name
+        });
+        return club.save();
+      });
 
-      Promise.all(itemPromises).then(itemObjects => {
-        outfits.map(
+      Promise.all(clubPromises).then(clubObjects => {
+        divisions.map(
           ({
             items,
             name,
@@ -76,17 +60,11 @@ results.map(user => {
             occasion,
             season
           }) => {
-            const outfit = new Outfit({
-              creator: newUser._id,
-              items: itemObjects.filter(item => items.includes(item.name)),
+            const division = new Division({
               name,
-              image_url,
-              categories,
-              styles,
-              occasion,
-              season
+              image_url
             });
-            outfit.save();
+            division.save();
           }
         );
       });

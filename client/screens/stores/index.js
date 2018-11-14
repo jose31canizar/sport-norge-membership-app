@@ -4,26 +4,26 @@ import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
 import { styles } from "./style";
 import { FuturaText } from "../../components/styled-text";
+import withTabBarDetection from "../../components/with-tab-bar-detection";
 
-export default connect(
-  state => ({ stores: state.store.stores }),
-  null
-)(
+export default withTabBarDetection(
+  {
+    headerTitle: "Stores"
+  },
   class Store extends Component {
-    static navigationOptions = {
-      headerTitle: "Stores"
-    };
     state = {
       latitude: this.props.stores[0].location.latitude,
       longitude: this.props.stores[0].location.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421
+      latitudeDelta: 0,
+      longitudeDelta: 0
     };
     render() {
       const { stores } = this.props;
+      const { latitude, longitude } = this.state;
       return (
         <FlatList
           showsVerticalScrollIndicator={false}
+          initialNumToRender={4}
           ListHeaderComponent={
             <MapView
               style={{
@@ -36,8 +36,8 @@ export default connect(
             >
               <Marker
                 coordinate={{
-                  latitude: this.state.latitude,
-                  longitude: this.state.longitude
+                  latitude,
+                  longitude
                 }}
                 title={"Sport Norge Os"}
                 description={"Store"}
@@ -46,21 +46,27 @@ export default connect(
           }
           data={stores}
           keyExtractor={(item, i) => i.toString()}
-          renderItem={({ item }) => (
+          renderItem={({
+            item: {
+              store,
+              categories,
+              image,
+              description,
+              location: { latitude, longitude },
+              street_address
+            }
+          }) => (
             <TouchableOpacity
               style={styles.offer_container}
               onPress={() =>
-                this.setState({ showModal: true, itemData: { ...item } })
+                this.setState({ showModal: true, latitude, longitude })
               }
             >
               <View style={styles.offer}>
-                <Image style={styles.image} source={{ uri: item.image }} />
+                <Image style={styles.image} source={{ uri: image }} />
                 <View style={styles.offer_content}>
-                  <FuturaText>{item.key}</FuturaText>
-                  <FuturaText style={styles.percentage}>
-                    {item.percentage}%
-                  </FuturaText>
-                  <FuturaText>{item.description}</FuturaText>
+                  <FuturaText>{description}</FuturaText>
+                  <FuturaText>{street_address}</FuturaText>
                 </View>
               </View>
             </TouchableOpacity>
@@ -68,5 +74,6 @@ export default connect(
         />
       );
     }
-  }
+  },
+  state => ({ stores: state.store.stores })
 );
