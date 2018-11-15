@@ -1,17 +1,8 @@
-import A from "./activity";
-import D from "./discover";
-import H from "./home";
-import P from "./profile";
-import L from "./login";
-import Q from "./qr-code-viewer";
-import O from "./offers";
-import S from "./stores";
-
-export const Activity = A;
-export const Discover = D;
-export const Home = H;
-export const Profile = P;
-export const Login = L;
-export const QRCodeViewer = Q;
-export const Stores = S;
-export const Offers = O;
+export { default as Activity } from "./activity";
+export { default as Discover } from "./discover";
+export { default as Home } from "./home";
+export { default as Profile } from "./profile";
+export { default as Login } from "./login";
+export { default as QRCodeViewer } from "./qr-code-viewer";
+export { default as Stores } from "./offers";
+export { default as Offers } from "./stores";

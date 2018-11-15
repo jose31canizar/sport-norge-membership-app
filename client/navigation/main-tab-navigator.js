@@ -127,9 +127,8 @@ export const Stacks = Piles.reduce(
         tabBarIcon: ({ focused }) => (
           <TabBarIcon
             name={headerTitle}
-            focused={focused}
             fill="transparent"
-            stroke="#c4cbce"
+            stroke={focused ? "#333" : "#c4cbce"}
             strokeWidth={2}
           />
         )

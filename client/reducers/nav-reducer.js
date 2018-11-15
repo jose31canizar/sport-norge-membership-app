@@ -16,8 +16,7 @@ function nav(state = initialState, action) {
   if (
     action.type === "Navigation/TOGGLE_DRAWER" ||
     action.type === "Navigation/FORCE_CLOSE_DRAWER" ||
-    action.type === "Navigation/COMPLETE_TRANSITION" ||
-    action.type === "Navigation/NAVIGATE"
+    action.type === "Navigation/COMPLETE_TRANSITION"
   ) {
     return {
       ...state,
