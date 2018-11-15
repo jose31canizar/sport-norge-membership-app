@@ -50,23 +50,13 @@ results.map(user => {
       });
 
       Promise.all(clubPromises).then(clubObjects => {
-        divisions.map(
-          ({
-            items,
+        divisions.map(({ name, image_url }) => {
+          const division = new Division({
             name,
-            image_url,
-            categories,
-            styles,
-            occasion,
-            season
-          }) => {
-            const division = new Division({
-              name,
-              image_url
-            });
-            division.save();
-          }
-        );
+            image_url
+          });
+          division.save();
+        });
       });
     })
     .catch(err => {
