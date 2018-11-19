@@ -4,6 +4,7 @@ import { Svg } from "expo";
 const Path = Svg.Path;
 const Circle = Svg.Circle;
 const G = Svg.G;
+const Line = Svg.Line;
 
 const paths = ({ fill, stroke, strokeWidth }) => ({
   Home: (
@@ -55,6 +56,26 @@ const paths = ({ fill, stroke, strokeWidth }) => ({
         stroke={stroke}
         strokeWidth={strokeWidth}
         d="M15.63 20.5S16 15.38 14 13.13c-1.59-1.72-3.33-2.08-5.63-2.13s-4 .41-5.63 2.13C.62 15.38 1 20.5 1 20.5"
+      />
+    </G>
+  ),
+  Camera: (
+    <G>
+      <Line
+        fill={fill}
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        x1="10"
+        x2="10"
+        y2="19.53"
+      />
+      <Line
+        fill={fill}
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        x1="19.55"
+        y1="10"
+        y2="10"
       />
     </G>
   )

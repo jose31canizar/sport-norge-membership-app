@@ -29,7 +29,8 @@ import {
   Profile,
   Offers,
   Stores,
-  QRCodeViewer
+  QRCodeViewer,
+  Camera
 } from "../screens";
 
 import { connect } from "react-redux";
@@ -75,7 +76,7 @@ const HomeStacks = createTabNavigator(
   },
   {
     tabBarComponent: () => <View />,
-    swipeEnabled: true,
+    swipeEnabled: false,
     animationEnabled: true
   }
 );
@@ -90,6 +91,11 @@ const Piles = [
     name: "Activity",
     routes: { Activity },
     headerTitle: "Activity"
+  },
+  {
+    name: "Camera",
+    routes: { Camera },
+    headerTitle: "Camera"
   },
   {
     name: "Discover",
@@ -128,7 +134,7 @@ export const Stacks = Piles.reduce(
           <TabBarIcon
             name={headerTitle}
             fill="transparent"
-            stroke={focused ? "#333" : "#c4cbce"}
+            stroke={focused ? "#eb524b" : "#c4cbce"}
             strokeWidth={2}
           />
         )

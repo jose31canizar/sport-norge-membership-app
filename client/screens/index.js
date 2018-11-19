@@ -6,3 +6,4 @@ export { default as Login } from "./login";
 export { default as QRCodeViewer } from "./qr-code-viewer";
 export { default as Stores } from "./offers";
 export { default as Offers } from "./stores";
+export { default as Camera } from "./camera";
